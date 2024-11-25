@@ -13,3 +13,9 @@ final class RegisterFeliuer extends RegisterState {
   String err;
   RegisterFeliuer(this.err);
 }
+
+class RegisterPasswordVisibilityToggled extends RegisterState {
+  final bool isVisible;
+
+  RegisterPasswordVisibilityToggled(this.isVisible);
+}

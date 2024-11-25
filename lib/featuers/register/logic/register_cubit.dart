@@ -21,6 +21,15 @@ class RegisterCubit extends Cubit<RegisterState> {
   /// formkey for my register screen
   final GlobalKey<FormState>  keyform = GlobalKey<FormState>();
 
+  /// To toggle password visibility
+  bool isPasswordVisible = false;
+
+  /// Toggles password visibility
+  void togglePasswordVisibility() {
+    isPasswordVisible = !isPasswordVisible;
+    emit(RegisterPasswordVisibilityToggled(isPasswordVisible));
+  }
+
   /// function register
   Future register() async {
     if (!keyform.currentState!.validate()) {

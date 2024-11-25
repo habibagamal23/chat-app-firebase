@@ -23,9 +23,8 @@ class RegisterScreen extends StatelessWidget {
                   onPressed: () {
                     themeCubit.ToggleTheme();
                   },
-                  icon: Icon(state is ThemeIsDark
-                      ? Icons.light_mode
-                      : Icons.dark_mode));
+                  icon: Icon(
+                    state is ThemeIsDark? Icons.light_mode : Icons.dark_mode));
             },
           )
         ],
@@ -88,24 +87,28 @@ class RegisterScreen extends StatelessWidget {
   }
 
   Widget buildPasswordField(RegisterCubit registerCubit) {
-    // not  complete to toggle by press on icon
-    return CustomTextField(
-        controller: registerCubit.passcon,
-        label: 'Password',
-        obscureText: true,
-        suffixIcon: IconButton(
-          icon: Icon(
-            Icons.visibility,
-            size: 24.sp,
-          ),
-          onPressed: () {},
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter your password.';
-          }
-          return null;
-        });
+    return BlocBuilder<RegisterCubit, RegisterState>(
+      builder: (context, state) {
+        return CustomTextField(
+            controller: registerCubit.passcon,
+            label: 'Password',
+            obscureText: !registerCubit.isPasswordVisible,
+            suffixIcon: IconButton(
+                icon: Icon(
+                  registerCubit.isPasswordVisible
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                  size: 24.sp,
+                ),
+                onPressed: registerCubit.togglePasswordVisibility),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your password.';
+              }
+              return null;
+            });
+      },
+    );
   }
 
   Widget buildRegisterButton(RegisterCubit registerCubit) {
