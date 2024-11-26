@@ -11,7 +11,7 @@ part 'login_state.dart';
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit() : super(LoginInitial());
 
-  FirebaseAuthontion firebaseAuth = FirebaseAuthontion();
+  FirebaseAuthService firebaseAuth = FirebaseAuthService();
 
   /// Text controllers for email and password input fields
   final TextEditingController emailController = TextEditingController();

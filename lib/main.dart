@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'featuers/content/logic/contant_cubit.dart';
 import 'firebase_options.dart';
 import 'myApp.dart';
 
@@ -19,6 +20,8 @@ void main() async {
   runApp(MultiBlocProvider(providers: [
     BlocProvider(create: (_) => RegisterCubit()),
     BlocProvider(create: (_) => ThemeCubit()),
-    BlocProvider(create: (_) => LoginCubit())
+    BlocProvider(create: (_) => LoginCubit()),
+    BlocProvider(create: (_) => ContantCubit()),
+
   ], child: const MyApp()));
 }

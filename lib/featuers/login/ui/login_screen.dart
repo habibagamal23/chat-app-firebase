@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../core/routes/router_constant.dart';
 import '../../../core/wigdtes/custom_form_feild.dart';
 import '../logic/login_cubit.dart';
 
@@ -76,6 +78,7 @@ class LoginScreen extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Login Successful!')),
                       );
+                      context.go(RouterConstant.home);
                     } else if (state is LoginFailure) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text(state.error)),

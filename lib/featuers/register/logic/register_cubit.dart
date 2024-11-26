@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:chattest/core/firebase_service/firebase_Auth.dart';
+import 'package:chattest/featuers/content/model/user_Model.dart';
 import 'package:chattest/featuers/register/model/registerbody.dart';
 import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
+
+import '../../../core/firebase_service/FirebaseDataService.dart';
 
 part 'register_state.dart';
 
@@ -10,7 +15,7 @@ class RegisterCubit extends Cubit<RegisterState> {
   RegisterCubit() : super(RegisterInitial());
 
   /// object for class firebase auth to get register fun
-  FirebaseAuthontion firebaseAuth = FirebaseAuthontion();
+  FirebaseAuthService firebaseAuth = FirebaseAuthService();
 
   /// controller  of my regisetr screen
   TextEditingController emailcon = TextEditingController();
@@ -19,7 +24,7 @@ class RegisterCubit extends Cubit<RegisterState> {
   TextEditingController phoneecon = TextEditingController();
 
   /// formkey for my register screen
-  final GlobalKey<FormState>  keyform = GlobalKey<FormState>();
+  final GlobalKey<FormState> keyform = GlobalKey<FormState>();
 
   /// To toggle password visibility
   bool isPasswordVisible = false;
@@ -28,6 +33,14 @@ class RegisterCubit extends Cubit<RegisterState> {
   void togglePasswordVisibility() {
     isPasswordVisible = !isPasswordVisible;
     emit(RegisterPasswordVisibilityToggled(isPasswordVisible));
+  }
+
+  File? profileImage;
+
+  /// Set the selected profile image
+  void setProfileImage(File? image) {
+    profileImage = image;
+    emit(RegisterImageSelected(image));
   }
 
   /// function register
@@ -44,8 +57,11 @@ class RegisterCubit extends Cubit<RegisterState> {
           username: usernamecon.text,
           phone: phoneecon.text);
 
-      final user = await firebaseAuth.register(registerbody);
+      final user =
+          await firebaseAuth.register(registerbody, imageFile: profileImage);
       if (user != null) {
+
+
         emit(RegisterSuccess());
       } else {
         emit(RegisterFeliuer("user is null"));
