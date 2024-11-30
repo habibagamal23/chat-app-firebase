@@ -1,13 +1,11 @@
 import 'dart:io';
 
+import 'package:chattest/core/firebase_service/firebase_store.dart';
+import 'package:chattest/core/firebase_service/firebase_storege.dart';
+import 'package:chattest/featuers/contacts/model/user_Model.dart';
 import 'package:chattest/featuers/login/model/loginBody.dart';
 import 'package:chattest/featuers/register/model/registerbody.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-
-import '../../featuers/content/model/user_Model.dart';
-import 'FirebaseDataService.dart';
-import 'firebase_storage_service.dart';
 
 class FirebaseAuthService {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -25,7 +23,7 @@ class FirebaseAuthService {
     }
   }
 
-  Future<User?> register(RegisterBody registerbody, {File? imageFile}) async {
+  Future<User?> register(RegisterBody registerbody, {File? image}) async {
     try {
       final credential = await auth.createUserWithEmailAndPassword(
         email: registerbody.email,
@@ -35,8 +33,8 @@ class FirebaseAuthService {
       final user = credential.user;
 
       /// Upload profile image if provided
-      if (imageFile != null) {
-        await FirebaseSorageService().uploadProfileImage(imageFile);
+      if (image != null) {
+        await FirebaseStorageService().ProfileImage(image);
       }
 
       if (user != null) {
@@ -44,17 +42,18 @@ class FirebaseAuthService {
         await user.reload();
 
         /// to store this in store
-        UserModel userProfile = UserModel(
+        var usermodel = UserModel(
             id: user.uid,
             name: registerbody.username,
             email: registerbody.email,
-            about: "is new user ",
-            phoneNumber: registerbody.phone,
-            createdAt: DateTime.now().toIso8601String(),
-            lastActivated: DateTime.now().toIso8601String(),
+            about: "new user",
+            phoneNumber:registerbody.phone,
+            createdAt: DateTime.now().toString(),
+            lastActivated: DateTime.now().toString(),
             pushToken: "",
             online: true);
-        await FirebaseDataService().creatUser(userProfile);
+
+      await   FirebaseStoreService().CreatUser(usermodel);
       }
 
       return user;
@@ -63,12 +62,11 @@ class FirebaseAuthService {
     }
   }
 
-  Future<void> logout() async {
+  Future logout() async {
     try {
       await auth.signOut();
     } catch (e) {
-      print('Error logging out: $e');
-      throw e;
+      throw Exception("logout error $e");
     }
   }
 

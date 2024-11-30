@@ -21,6 +21,6 @@ class RegisterPasswordVisibilityToggled extends RegisterState {
 }
 
 class RegisterImageSelected extends RegisterState {
-  File?  image;
+  File? image;
   RegisterImageSelected(this.image);
 }

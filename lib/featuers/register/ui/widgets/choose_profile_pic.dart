@@ -13,26 +13,28 @@ class ChooseProfilePic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final registerCubit = context.read<RegisterCubit>();
-    return BlocBuilder<RegisterCubit, RegisterState>(
+    return  BlocBuilder<RegisterCubit, RegisterState>(
       builder: (context, state) {
         return GestureDetector(
           onTap: () async {
-            final picker = ImagePicker();
-            final pickedFile =
+            final ImagePicker picker = ImagePicker();
+            final filepicker =
             await picker.pickImage(source: ImageSource.camera);
-            if (pickedFile != null) {
-              registerCubit.setProfileImage(File(pickedFile.path));
+            if (filepicker != null) {
+              registerCubit.setImage(File(filepicker.path));
             }
           },
           child: CircleAvatar(
-            radius: 40.w,
-            backgroundImage: registerCubit.profileImage != null
-                ? FileImage(registerCubit.profileImage!)
-                : null,
-            child: registerCubit.profileImage == null
-                ? Icon(Icons.camera_alt, size: 30.sp)
-                : null,
-          ),
+              radius: 40.r,
+              backgroundImage: registerCubit.proileimage != null
+                  ? FileImage(registerCubit.proileimage! , )
+                  : null,
+              child: registerCubit.proileimage == null
+                  ? Icon(
+                Icons.camera,
+                size: 30.sp,
+              )
+                  : null),
         );
       },
     );

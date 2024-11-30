@@ -7,6 +7,7 @@ import 'package:chattest/featuers/register/ui/widgets/register_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../logic_myApp/theme/theme_cubit.dart';
 
 class RegisterScreen extends StatelessWidget {

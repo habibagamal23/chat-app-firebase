@@ -1,18 +1,15 @@
 import 'package:chattest/featuers/register/ui/register_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../featuers/content/ui/users.dart';
+import '../../featuers/contacts/ui/users.dart';
 import '../../featuers/home/ui/homescreen.dart';
 import '../../featuers/login/ui/login_screen.dart';
 import 'router_constant.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: FirebaseAuth.instance.currentUser != null
-        ? RouterConstant.home
-        : RouterConstant.login,
+    initialLocation: FirebaseAuth.instance.currentUser !=null
+        ? RouterConstant.home: RouterConstant.register,
     routes: [
       GoRoute(
         path: RouterConstant.login,

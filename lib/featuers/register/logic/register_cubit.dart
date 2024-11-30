@@ -2,12 +2,9 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:chattest/core/firebase_service/firebase_Auth.dart';
-import 'package:chattest/featuers/content/model/user_Model.dart';
 import 'package:chattest/featuers/register/model/registerbody.dart';
 import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
-
-import '../../../core/firebase_service/FirebaseDataService.dart';
 
 part 'register_state.dart';
 
@@ -35,11 +32,11 @@ class RegisterCubit extends Cubit<RegisterState> {
     emit(RegisterPasswordVisibilityToggled(isPasswordVisible));
   }
 
-  File? profileImage;
 
-  /// Set the selected profile image
-  void setProfileImage(File? image) {
-    profileImage = image;
+  ///  to get image from ui when u chhose image
+ File ? proileimage ;
+  setImage(File image){
+    proileimage = image;
     emit(RegisterImageSelected(image));
   }
 
@@ -58,7 +55,7 @@ class RegisterCubit extends Cubit<RegisterState> {
           phone: phoneecon.text);
 
       final user =
-          await firebaseAuth.register(registerbody, imageFile: profileImage);
+          await firebaseAuth.register(registerbody , image: proileimage);
       if (user != null) {
 
 
