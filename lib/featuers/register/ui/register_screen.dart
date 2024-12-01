@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chattest/core/routes/router_constant.dart';
 import 'package:chattest/featuers/register/logic/register_cubit.dart';
 import 'package:chattest/featuers/register/ui/widgets/all_text_feiled.dart';
 import 'package:chattest/featuers/register/ui/widgets/choose_profile_pic.dart';
@@ -7,6 +8,7 @@ import 'package:chattest/featuers/register/ui/widgets/register_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../logic_myApp/theme/theme_cubit.dart';
 
@@ -45,7 +47,10 @@ class RegisterScreen extends StatelessWidget {
                 SizedBox(height: 16.h),
                 const AllTextFeiled(),
                 SizedBox(height: 32.h),
-                const RegisterButton()
+                const RegisterButton(),
+                TextButton(onPressed: (){
+                  context.go(RouterConstant.login);
+                }, child: Text("login"))
               ],
             ),
           ),

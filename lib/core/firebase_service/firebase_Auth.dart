@@ -42,18 +42,18 @@ class FirebaseAuthService {
         await user.reload();
 
         /// to store this in store
+        ///
         var usermodel = UserModel(
             id: user.uid,
             name: registerbody.username,
             email: registerbody.email,
-            about: "new user",
-            phoneNumber:registerbody.phone,
-            createdAt: DateTime.now().toString(),
-            lastActivated: DateTime.now().toString(),
+            about: "New user",
+            phoneNumber: registerbody.phone,
+            createdAt: DateTime.now().toIso8601String(),
+            lastActivated: DateTime.now().toIso8601String(),
             pushToken: "",
             online: true);
-
-      await   FirebaseStoreService().CreatUser(usermodel);
+        await FirebaseStoreService().CreatUser(usermodel);
       }
 
       return user;

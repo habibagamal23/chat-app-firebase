@@ -1,4 +1,7 @@
+import 'package:chattest/core/firebase_service/firebase_store.dart';
 import 'package:chattest/core/sharedprefrance/shared_pref_helper.dart';
+import 'package:chattest/featuers/contacts/logic/users_cubit.dart';
+import 'package:chattest/featuers/home/logic/rooms_cubit.dart';
 import 'package:chattest/featuers/login/logic/login_cubit.dart';
 import 'package:chattest/featuers/register/logic/register_cubit.dart';
 import 'package:chattest/featuers/register/ui/register_screen.dart';
@@ -19,5 +22,8 @@ void main() async {
     BlocProvider(create: (_) => RegisterCubit()),
     BlocProvider(create: (_) => ThemeCubit()),
     BlocProvider(create: (_) => LoginCubit()),
+    BlocProvider(create: (_) => UsersCubit(FirebaseStoreService())),
+    BlocProvider(create: (_) => RoomsCubit(FirebaseStoreService())),
+
   ], child: const MyApp()));
 }
