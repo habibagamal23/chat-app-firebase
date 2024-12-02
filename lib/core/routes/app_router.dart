@@ -1,7 +1,7 @@
 import 'package:chattest/featuers/register/ui/register_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
-import '../../featuers/contacts/ui/users.dart';
+import '../../featuers/contacts/ui/contactsScreen.dart';
 import '../../featuers/home/ui/homescreen.dart';
 import '../../featuers/login/ui/login_screen.dart';
 import 'router_constant.dart';
@@ -32,7 +32,7 @@ class AppRouter {
       GoRoute(
         path: RouterConstant.content,
         builder: (context, state) {
-          return SelectUserScreen();
+          return ContactsScreen();
         },
       ),
     ],

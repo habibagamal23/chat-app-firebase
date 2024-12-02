@@ -1,13 +1,14 @@
 import 'package:chattest/featuers/contacts/model/user_Model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../model/room.dart';
+import '../../model/room.dart';
 
 class UserCard extends StatelessWidget {
   final UserModel userProfile;
   final Room room;
 
-  UserCard({required this.userProfile, required this.room});
+  const UserCard({super.key, required this.userProfile, required this.room});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class UserCard extends StatelessWidget {
                           child: Text(
                             userProfile.name[0].toUpperCase(),
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 24.sp,
                             ),
                           ),
                         ),
@@ -53,7 +54,7 @@ class UserCard extends StatelessWidget {
                           ),
                       ],
                     ),
-                    SizedBox(width: 15),
+                    SizedBox(width: 15.w),
                     Expanded(
                       child: _buildUserDetails(),
                     ),

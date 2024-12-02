@@ -19,51 +19,48 @@ class CardSelectedUsers extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.w, horizontal: 7.h),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius:
-              BorderRadius.circular(12.r), // Rounded corners for the effect
-          onTap: () {
-            context.read<RoomsCubit>().creatroom(userProfile.id);
-            context.pop();
-          },
-          child: Card(
-            elevation: 5.0.sp,
-            shadowColor: Colors.black45,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.r), // Rounded corners
+      child: InkWell(
+        borderRadius:
+            BorderRadius.circular(12.r),
+        onTap: () {
+          context.read<RoomsCubit>().creatroom(userProfile.id);
+          context.pop();
+        },
+        child: Card(
+          elevation: 5.0.sp,
+          shadowColor: Colors.black45,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          color: Colors.white,
+          child: ListTile(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+            title: Text(
+              userProfile.name,
+              style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
             ),
-            color: Colors.white,
-            child: ListTile(
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
-              title: Text(
-                userProfile.name,
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
+            subtitle: Text(
+              userProfile.phoneNumber,
+              style: TextStyle(
+                fontSize: 16.sp,
+                color: Colors.grey,
               ),
-              subtitle: Text(
-                userProfile.phoneNumber,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  color: Colors.grey,
-                ),
-              ),
-              trailing: Text(
-                formattedTime,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: Colors.blueGrey,
-                ),
-              ),
-              hoverColor: Colors.blue.shade100,
-              focusColor: Colors.blue.shade200,
-              selectedColor: Colors.blue.shade300,
             ),
+            trailing: Text(
+              formattedTime,
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: Colors.blueGrey,
+              ),
+            ),
+            hoverColor: Colors.blue.shade100,
+            focusColor: Colors.blue.shade200,
+            selectedColor: Colors.blue.shade300,
           ),
         ),
       ),

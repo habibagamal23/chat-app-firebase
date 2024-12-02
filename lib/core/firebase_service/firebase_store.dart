@@ -2,6 +2,7 @@ import 'package:chattest/featuers/contacts/model/user_Model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../featuers/chat/model/message_model.dart';
 import '../../featuers/home/model/room.dart';
 import 'firebase_Auth.dart';
 
@@ -32,38 +33,39 @@ class FirebaseStoreService {
     });
   }
 
-  Future creatRoom(String ontherid) async {
+
+  Future createRoom(String userId) async {
     try {
-      List<String> members = [myUid, ontherid]..sort();
-
-      CollectionReference chatroom = await firestore.collection("rooms");
-      var existroom = await chatroom.where('members', isEqualTo: members).get();
-      if (existroom.docs.isNotEmpty) {
-        return existroom.docs.first.id;
+      CollectionReference chatroom = await firestore.collection('rooms');
+      final sortedmemers = [myUid, userId]..sort((a, b) => a.compareTo(b));
+      QuerySnapshot existChatrooom =
+      await chatroom.where('members', isEqualTo: sortedmemers).get();
+      if (existChatrooom.docs.isNotEmpty) {
+        return existChatrooom.docs.first.id;
       } else {
-        var roomid = firestore.collection("rooms").doc().id;
-
-        var roomModel = Room(
-            id: roomid,
-            lastMessage: '',
-            members: members,
-            lastMessageTime: '',
-            createdAt: DateTime.now().toString());
-        await firestore.collection("rooms").doc(roomid).set(roomModel.toJson());
+        final chatroomid = await firestore.collection('rooms').doc().id;
+        Room r = Room(
+          id: chatroomid,
+          createdAt: DateTime.now().toIso8601String(),
+          lastMessage: "",
+          members: sortedmemers,
+          lastMessageTime: DateTime.now().toIso8601String(),
+        );
+        await firestore.collection('rooms').doc(chatroomid).set(r.toJson());
       }
     } catch (e) {
-      print("Error creating room: $e");
-      return '';
+      return e.toString();
     }
   }
 
-  Stream<List<Room>> getMyRooms() {
+  Stream<List<Room>> getAllRooms() {
     return firestore
-        .collection("rooms")
+        .collection('rooms')
         .where('members', arrayContains: myUid)
         .snapshots()
-        .map((snapshot) {
-      return snapshot.docs.map((room) => Room.fromJson(room.data())).toList();
-    });
+        .map((snapshot) =>
+    snapshot.docs.map((doc) => Room.fromJson(doc.data())).toList()
+      ..sort((a, b) => b.lastMessageTime.compareTo(a.lastMessageTime)));
   }
+
 }
