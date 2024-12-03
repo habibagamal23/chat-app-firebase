@@ -1,3 +1,5 @@
+import 'package:chattest/featuers/chat/chatscreen.dart';
+import 'package:chattest/featuers/contacts/model/user_Model.dart';
 import 'package:chattest/featuers/register/ui/register_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
@@ -33,6 +35,14 @@ class AppRouter {
         path: RouterConstant.content,
         builder: (context, state) {
           return ContactsScreen();
+        },
+      ),
+      GoRoute(
+        path: RouterConstant.chat,
+        builder: (context, state) {
+          final UserModel userModel = state.extra as UserModel;
+
+          return ChatScreen(userProfile: userModel!);
         },
       ),
     ],
