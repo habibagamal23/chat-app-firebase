@@ -1,5 +1,5 @@
 import 'package:chattest/core/routes/router_constant.dart';
-import 'package:chattest/featuers/chat/chat_cubit.dart';
+import 'package:chattest/featuers/chat/logic/chat_cubit.dart';
 import 'package:chattest/featuers/contacts/model/user_Model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +18,7 @@ class UserCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () {
-          context.read<ChatCubit>().fetchMessages(room.id);
+          context.read<ChatCubit>().showAllMessages(room.id);
           context.push(RouterConstant.chat, extra: userProfile);
         },
         child: Padding(

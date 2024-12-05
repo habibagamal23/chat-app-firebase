@@ -1,6 +1,6 @@
 import 'package:chattest/core/firebase_service/firebase_store.dart';
 import 'package:chattest/core/sharedprefrance/shared_pref_helper.dart';
-import 'package:chattest/featuers/chat/chat_cubit.dart';
+import 'package:chattest/featuers/chat/logic/chat_cubit.dart';
 import 'package:chattest/featuers/contacts/logic/users_cubit.dart';
 import 'package:chattest/featuers/home/logic/rooms_cubit.dart';
 import 'package:chattest/featuers/login/logic/login_cubit.dart';
@@ -15,19 +15,11 @@ import 'core/firebase_service/notifc.dart';
 import 'firebase_options.dart';
 import 'myApp.dart';
 
-
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  print('Handling a background message: ${message.messageId}');
-}
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  await Nofifcation().requestNotificationPermissions();
 
   await SharedPrefsHelper.init();
   runApp(MultiBlocProvider(providers: [
@@ -37,6 +29,5 @@ void main() async {
     BlocProvider(create: (_) => UsersCubit(FirebaseStoreService())),
     BlocProvider(create: (_) => RoomsCubit(FirebaseStoreService())),
     BlocProvider(create: (_) => ChatCubit(FirebaseStoreService())),
-
   ], child: const MyApp()));
 }

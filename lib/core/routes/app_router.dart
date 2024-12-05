@@ -1,4 +1,4 @@
-import 'package:chattest/featuers/chat/chatscreen.dart';
+import 'package:chattest/featuers/chat/ui/chatscreen.dart';
 import 'package:chattest/featuers/contacts/model/user_Model.dart';
 import 'package:chattest/featuers/register/ui/register_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';

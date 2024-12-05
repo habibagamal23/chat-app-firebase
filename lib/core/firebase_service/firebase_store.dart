@@ -11,20 +11,11 @@ class FirebaseStoreService {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   // 1-  update user push token in Firestore
-  Future<void> updateUserToken(String userId) async {
-    String? token = await Nofifcation().getDevicesToken();
-    if (token != null) {
-      await firestore.collection('users').doc(userId).update({
-        'push_token': token,
-      });
-    }
-  }
+
 
   Future CreatUser(UserModel usermodel) async {
     try {
       //2
-      usermodel.pushToken = await Nofifcation().getDevicesToken() ?? "";
-
       await firestore
           .collection("users")
           .doc(usermodel.id)
@@ -47,13 +38,12 @@ class FirebaseStoreService {
     });
   }
 
-
   Future createRoom(String userId) async {
     try {
       CollectionReference chatroom = await firestore.collection('rooms');
       final sortedmemers = [myUid, userId]..sort((a, b) => a.compareTo(b));
       QuerySnapshot existChatrooom =
-      await chatroom.where('members', isEqualTo: sortedmemers).get();
+          await chatroom.where('members', isEqualTo: sortedmemers).get();
       if (existChatrooom.docs.isNotEmpty) {
         return existChatrooom.docs.first.id;
       } else {
@@ -78,41 +68,31 @@ class FirebaseStoreService {
         .where('members', arrayContains: myUid)
         .snapshots()
         .map((snapshot) =>
-    snapshot.docs.map((doc) => Room.fromJson(doc.data())).toList()
-      ..sort((a, b) => b.lastMessageTime.compareTo(a.lastMessageTime)));
+            snapshot.docs.map((doc) => Room.fromJson(doc.data())).toList()
+              ..sort((a, b) => b.lastMessageTime.compareTo(a.lastMessageTime)));
   }
 
-  Future createMessage(
-      String toid, String msg, String roomid) async {
-    final msgid = firestore.collection('messages').doc().id;
-
-    Message message = Message(
-        id: msgid,
-        toId: toid,
+  Future creatmessge(String roomId, String toId, String msg) async {
+    final msgId = FirebaseFirestore.instance
+        .collection("messages")
+        .doc()
+        .id; // Generate message ID automatically
+    DocumentReference myRoomRef =
+        FirebaseFirestore.instance.collection('rooms').doc(roomId);
+    var mymessage = Message(
+        id: msgId,
+        toId: toId,
         fromId: myUid,
         msg: msg,
-        read: false,
-        createdAt: DateTime.now().toIso8601String(),
-        type: "text"
-    );
+        read: true,
+        createdAt: DateTime.now().toString(),
+        type: "text");
+    await myRoomRef.collection("messages").doc(msgId).set(mymessage.toJson());
 
-    DocumentReference myroom = firestore.collection('rooms').doc(roomid);
-
-    await myroom.collection('messages').doc(msgid).set(message.toJson());
-
-    await myroom.update(
-        {'last_message': message.msg, 'last_message_time': message.createdAt});
-
-    // 3
-    DocumentSnapshot user =
-    await firestore.collection('users').doc(message.toId).get();
-    String pushtokent = user.get('push_token');
-    String username = user.get('name');
-
-    if (pushtokent != null && pushtokent.isNotEmpty) {
-      await Nofifcation().senNotifaction(message.msg, username, pushtokent);
-    }
-
+    await myRoomRef.update({
+      'last_message': mymessage.msg,
+      'last_message_time': mymessage.createdAt
+    });
   }
 
   Stream<List<Message>> getMessages(String roomid) {
@@ -120,9 +100,8 @@ class FirebaseStoreService {
         .collection('rooms')
         .doc(roomid)
         .collection('messages')
-        .orderBy('created_at', descending: true)
         .snapshots()
         .map((snapshot) =>
-        snapshot.docs.map((doc) => Message.fromJson(doc.data())).toList());
+            snapshot.docs.map((doc) => Message.fromJson(doc.data())).toList());
   }
 }
